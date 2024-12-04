@@ -39,13 +39,18 @@ Endpoints de la API
 
 	1.	GET /random-movies:
 Devuelve hasta 9 películas seleccionadas al azar.
-	•	Respuesta exitosa: JSON con las películas al azar.
-	•	Error: Código 404 si no hay películas disponibles.
+	
+•	Respuesta exitosa: JSON con las películas al azar.
+
+•	Error: Código 404 si no hay películas disponibles.
 	2.	GET /random-movies-by-genres:
 Devuelve hasta 15 películas al azar por género.
-	•	Géneros soportados: Horror, Adventure, Action, Drama, Comedy.
-	•	Respuesta exitosa: JSON con las películas agrupadas por género.
-	•	Error: Código 404 si no hay películas disponibles.
+
+•	Géneros soportados: Horror, Adventure, Action, Drama, Comedy.
+
+•	Respuesta exitosa: JSON con las películas agrupadas por género.
+
+•	Error: Código 404 si no hay películas disponibles.
 
 
 FrontEnd Microservice 
@@ -55,11 +60,16 @@ Este es el microservicio frontend de MovieLand, una aplicación web interactiva 
 Descripción
 
 Este repositorio contiene el código fuente del microservicio frontend de MovieLand, que se encarga de la interfaz de usuario. En particular, el microservicio muestra:
-	•	Un carrusel interactivo con películas recomendadas obtenidas a partir del servicio de recomendación del backend.
-	•	Carruseles de películas por género (como Recomendadas, Horror, Aventura, Acción, Drama, Comedia).
-	•	Información detallada de cada película, como título, año, calificación y duración.
-	•	La capacidad de registrar las visualizaciones enviando clics de los usuarios a un microservicio de historial. Luego de realizar tres clicks, se obtienen las peliculas recomendadas por el microservicio recomendador para el usuario en base a las peliculas cliqueadas.
- • Luego de ejecutar Docker-compose up, puede accederse al frontend a través de http://localhost:8080/index3.html 
+
+•	Un carrusel interactivo con películas recomendadas obtenidas a partir del servicio de recomendación del backend.
+	
+•	Carruseles de películas por género (como Recomendadas, Horror, Aventura, Acción, Drama, Comedia).
+	
+•	Información detallada de cada película, como título, año, calificación y duración.
+	
+•	La capacidad de registrar las visualizaciones enviando clics de los usuarios a un microservicio de historial. Luego de realizar tres clicks, se obtienen las peliculas recomendadas por el microservicio recomendador para el usuario en base a las peliculas cliqueadas.
+
+• Luego de ejecutar Docker-compose up, puede accederse al frontend a través de http://localhost:8080/index3.html 
 
 Las cinco películas recomendadas se actualizan dinámicamente con base en las películas que el recomendador proporciona a través de la API del backend. 
 
@@ -78,18 +88,24 @@ Este es el microservicio Historial de MovieLand, que se encarga de registrar las
 Descripción
 
 Este repositorio contiene el código fuente del microservicio de historial de MovieLand, que tiene la siguiente funcionalidad principal:
-	•	Recibe clics de películas a través de una API REST.
-	•	Almacena la cantidad de clics de cada película de manera temporal en memoria.
-	•	Envia estos clics a una cola de RabbitMQ para su procesamiento posterior, asegurando que los datos sean persistentes.
+
+•	Recibe clics de películas a través de una API REST.
+
+•	Almacena la cantidad de clics de cada película de manera temporal en memoria.
+
+•	Envia estos clics a una cola de RabbitMQ para su procesamiento posterior, asegurando que los datos sean persistentes.
 
 Cada vez que un usuario hace clic en una película, el microservicio incrementa un contador para esa película y envía un mensaje a la cola de RabbitMQ con el ID de la película y el número de clics.
 
 Características
 
-	•	Recibe solicitudes POST con el ID de una película y registra el clic.
-	•	Envia los clics registrados a una cola en RabbitMQ para su procesamiento posterior.
-	•	Utiliza RabbitMQ como sistema de mensajería para asegurar que los clics sean procesados de manera asíncrona y eficiente.
-	•	El microservicio está basado en Express.js y utiliza Body-Parser para procesar datos JSON.
+•	Recibe solicitudes POST con el ID de una película y registra el clic.
+
+•	Envia los clics registrados a una cola en RabbitMQ para su procesamiento posterior.
+
+•	Utiliza RabbitMQ como sistema de mensajería para asegurar que los clics sean procesados de manera asíncrona y eficiente.
+
+•	El microservicio está basado en Express.js y utiliza Body-Parser para procesar datos JSON.
 
 Recomendador Microservice
 
@@ -98,14 +114,20 @@ Este microservicio Recomendador es parte de la plataforma MovieLand, y se encarg
 Descripción
 
 Este repositorio contiene el código fuente del microservicio Recomendador, que proporciona recomendaciones de películas mediante la siguiente lógica:
-	1.	Recibe la información sobre las últimas tres películas cliqueadas por el usuario desde una cola de RabbitMQ.
-	2.	Obtiene los datos completos de las películas desde el microservicio Movies, el cual proporciona información detallada de todas las películas disponibles, como su título, géneros, clasificación en IMDb, duración, año de estreno, y la trama.
-	3.	Calcula la similitud entre las tramas de las películas cliqueadas y todas las demás películas disponibles, utilizando el método de similitud coseno.
-	4.	Calcula un puntaje combinado basado en:
-	•	Géneros de las películas
-	•	Puntuación de IMDb
-	•	Similitud de tramas
-	5.	Devuelve las 5 mejores recomendaciones de películas basadas en los puntajes calculados.
+
+1.	Recibe la información sobre las últimas tres películas cliqueadas por el usuario desde una cola de RabbitMQ.
+
+2.	Obtiene los datos completos de las películas desde el microservicio Movies, el cual proporciona información detallada de todas las películas disponibles, como su título, géneros, clasificación en IMDb, duración, año de estreno, y la trama.
+
+3.	Calcula la similitud entre las tramas de las películas cliqueadas y todas las demás películas disponibles, utilizando el método de similitud coseno.
+
+4.	Calcula un puntaje combinado  basado en:
+
+•	Géneros de las películas
+•	Puntuación de IMDb
+•	Similitud de tramas
+
+5.	Devuelve las 5 mejores recomendaciones de películas basadas en los puntajes calculados.
 
 El microservicio también obtiene información adicional de la API externa OMDb API para completar los detalles faltantes, como el póster, año y duración de las películas.
 
