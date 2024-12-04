@@ -1,0 +1,104 @@
+services:
+  mongodb:
+    image: mongo:4.4.6
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    mem_limit: 1g  # Asegúrate de asignar menos memoria a MongoDB si es posible
+
+
+  mongo-seed:
+    image: mongo:4.4.6
+    depends_on:
+      - mongodb
+    volumes:
+      - ./Movies/movies.json:/movies.json
+    mem_limit: 200m  # Limitar la memoria de este servicio de carga de datos
+
+
+
+  movies:
+    build:
+      context: ./Movies
+    container_name: movies
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/moviesdb
+    mem_limit: 500m  # Ya está limitado
+    cpus: '0.5'  # Asegúrate de asignar pocos recursos si es posible
+    command: node --max-old-space-size=2048 server.js
+
+
+  randommovies:
+    build:
+      context: ./RandomMovies
+    container_name: randommovies
+    ports:
+      - "4000:4000"
+    environment:
+      - MOVIES_API_URL=http://movies:3000/movies
+    depends_on:
+      - movies
+    mem_limit: 500m
+    cpus: '0.5'
+
+
+  frontend:
+    build:
+      context: ./FrontEnd
+    container_name: frontend_service
+    ports:
+      - "8080:8080"
+    environment:
+      - RANDOMMOVIES_API_URL=http://randommovies:4000
+    depends_on:
+      - randommovies
+    mem_limit: 500m
+    cpus: '0.5'
+
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "15672:15672" # Interfaz de administración
+      - "5672:5672"   # Puerto de comunicación AMQP
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  historial:
+    build:
+      context: ./historial
+    container_name: historial
+    ports:
+      - "5000:5000"
+    depends_on:
+      - rabbitmq
+
+  recomendador:  # Aquí agregamos el servicio recomendador
+    build:
+      context: ./Recomendador
+    container_name: recomendador
+    ports:
+      - "6001:6001"
+    depends_on:
+      - rabbitmq
+      - movies
+    environment:
+      - MOVIES_API_URL=http://movies:3000/movies  # API de películas
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+    mem_limit: 500m
+    cpus: '0.5'
+
+
+volumes:
+  mongo_data:
+
+
+
