@@ -264,8 +264,7 @@ const loadMovies = async () => {
                                 <div class="details__add details__button"></div>
                             </div>
                             <p class="details__title">${movie.title}</p>
-                            <p class="details__info">$ Year: 
-{movie.year} Rating: ${movie.imdb.rating} Runtime: ${movie.runtime}</p>
+                            <p class="details__info">Year: ${movie.year} Rating: ${movie.imdb.rating} Runtime: ${movie.runtime}</p>
                         </div>
                     `;
                     // Añadir evento de clic para abrir el modal
@@ -354,7 +353,7 @@ const updateRecommendedCarousel = (recommendedMovies) => {
         if (items[index]) {
             items[index].querySelector('img').src = movie.poster;
             items[index].querySelector('.details__title').textContent = movie.Title; 
-            items[index].querySelector('.details__info').textContent = `${movie.year} ${movie.Rating} ${movie.runtime}`;
+            items[index].querySelector('.details__info').textContent = `Year: ${movie.year} Rating: ${movie.Rating} Runtime: ${movie.runtime}`;
             
             // Actualizar evento de clic para mostrar el modal con el nuevo plot
             items[index].querySelector('.item__details').onclick = () => {
