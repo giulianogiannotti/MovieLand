@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieLand</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Flowbite CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@1.6.5/dist/flowbite.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&display=swap" rel="stylesheet">
+</head>
+<body  class="parkinsans-special bg-gray-100 dark:bg-gray-800" style="background: rgb(2,0,36); background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(68,68,110,1) 100%, rgba(0,212,255,1) 100%); min-height: 100vh;">
+<nav class="bg-white border-gray-200 dark:bg-gray-900">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <img src="1.jpeg" class="h-10" alt="Flowbite Logo" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white ">MovieLand</span>
+            </a>
+            <div class="flex md:order-2">
+                <button type="button" data-collapse-toggle="navbar-search" aria-controls="navbar-search" aria-expanded="false" class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 me-1">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                    <span class="sr-only">Search</span>
+                </button>
+                <div class="relative hidden md:block">
+                    <div class="absolute inset-y-0 start-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                        <span class="sr-only">Search icon</span>
+                <button data-collapse-toggle="navbar-search" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-search" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+            </div>
+           <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-search">
+                <div class="relative mt-3 md:hidden">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="text" id="search-navbar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search...">
+                </div>
+                <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li>
+                        <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Inicio</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Modal -->
+<div id="popup-modal" tabindex="-1" class="hidden overflow-x-hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-screen">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" onclick="closeModal()">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l6 6m0 0l6 6M7 7L1 13m6-6L1 1"/>
+                </svg>
+            </button>
+            <div class="p-4 text-center">
+                <h3 id="modal-title" class="mb-4 text-lg font-bold text-gray-700 dark:text-gray-300"></h3>
+                <p id="modal-content" class="mb-5 text-sm text-gray-500 dark:text-gray-400"></p>
+                <button type="button" onclick="closeModal()" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="spinner" class="hidden" style="position:absolute; top:50% ; left:48%;">
+  <svg class="text-gray-300 animate-spin" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"
+    width="24" height="24">
+    <path
+      d="M32 3C35.8083 3 39.5794 3.75011 43.0978 5.20749C46.6163 6.66488 49.8132 8.80101 52.5061 11.4939C55.199 14.1868 57.3351 17.3837 58.7925 20.9022C60.2499 24.4206 61 28.1917 61 32C61 35.8083 60.2499 39.5794 58.7925 43.0978C57.3351 46.6163 55.199 49.8132 52.5061 52.5061C49.8132 55.199 46.6163 57.3351 43.0978 58.7925C39.5794 60.2499 35.8083 61 32 61C28.1917 61 24.4206 60.2499 20.9022 58.7925C17.3837 57.3351 14.1868 55.199 11.4939 52.5061C8.801 49.8132 6.66487 46.6163 5.20749 43.0978C3.7501 39.5794 3 35.8083 3 32C3 28.1917 3.75011 24.4206 5.2075 20.9022C6.66489 17.3837 8.80101 14.1868 11.4939 11.4939C14.1868 8.80099 17.3838 6.66487 20.9022 5.20749C24.4206 3.7501 28.1917 3 32 3L32 3Z"
+      stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path
+      d="M32 3C36.5778 3 41.0906 4.08374 45.1692 6.16256C49.2477 8.24138 52.7762 11.2562 55.466 14.9605C58.1558 18.6647 59.9304 22.9531 60.6448 27.4748C61.3591 31.9965 60.9928 36.6232 59.5759 40.9762"
+      stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900">
+    </path>
+  </svg>
+</div>
+    <main class="principal">
+        <section class="categorias">
+	<script>
+	const spinner= document.getElementById("spinner").classList.remove("hidden");
+	const principal = document.querySelector(".principal").classList.add("hidden");
+	const categorias = document.querySelector(".categorias").classList.add("hidden");
+	</script>
+
+	    <!-- Carrusel Recomendado para ti -->
+<div id="carrusel-recomendado" class="categoria">
+    <h3 class="categoria__title parkinsans-special">Recomendado para ti</h3>
+    <div class="categoria__carousel test">
+        <div class="categoria__items" id="recomendado-items">
+            <!-- Los elementos del carrusel recomendado se inyectarán aquí por JavaScript -->
+        </div>
+    </div>
+    <div class="categoria__buttons">
+        <div id="btn-left" name="btn-left" class="categoria__button categoria__button-left" onclick="moveCarousel('recomendado-items',-1)">
+            <div class="imagen">
+                <img src="play-icon.png">
+            </div>
+        </div>
+        <div id="btn-right" name="btn-right" class="categoria__button categoria__button-right" onclick="moveCarousel('recomendado-items',1)">
+            <div class="imagen">
+                <img src="play-icon.png">
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- Carrusel Horror -->
+            <div id="carrusel-horror" class="categoria">
+                <h3 class="categoria__title parkinsans-special">Horror</h3>
+                <div class="categoria__carousel test">
+                    <div class="categoria__items" id="horror-items">
+                        <!-- Los elementos del carrusel de Horror se inyectarán aquí por JavaScript -->
+                    </div>
+                </div>
+		<div class="categoria__buttons">
+                    <div id="btn-left" name="btn-left" class="categoria__button categoria__button-left" onclick="moveCarousel('horror-items',-1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                    <div id="btn-right" name="btn-right" class="categoria__button categoria__button-right" onclick="moveCarousel('horror-items',1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carrusel Adventure -->
+            <div id="carrusel-adventure" class="categoria">
+                <h3 class="categoria__title parkinsans-special">Adventure</h3>
+                <div class="categoria__carousel test">
+                    <div class="categoria__items" id="adventure-items">
+                        <!-- Los elementos del carrusel de Adventure se inyectarán aquí por JavaScript -->
+                    </div>
+                </div>
+		<div class="categoria__buttons">
+                    <div id="btn-left" name="btn-left" class="categoria__button categoria__button-left" onclick="moveCarousel('adventure-items',-1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                    <div id="btn-right" name="btn-right" class="categoria__button categoria__button-right" onclick="moveCarousel('adventure-items',1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carrusel Action -->
+            <div id="carrusel-action" class="categoria">
+                <h3 class="categoria__title parkinsans-special">Action</h3>
+                <div class="categoria__carousel test">
+                    <div class="categoria__items" id="action-items">
+                        <!-- Los elementos del carrusel de Animation se inyectarán aquí por JavaScript -->
+                    </div>
+
+                </div>
+		<div class="categoria__buttons">
+                    <div id="btn-left" name="btn-left" class="categoria__button categoria__button-left" onclick="moveCarousel('action-items',-1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                    <div id="btn-right" name="btn-right" class="categoria__button categoria__button-right" onclick="moveCarousel('action-items',1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carrusel Drama -->
+            <div id="carrusel-drama" class="categoria">
+                <h3 class="categoria__title parkinsans-special">Drama</h3>
+                <div class="categoria__carousel test">
+                    <div class="categoria__items" id="drama-items">
+                        <!-- Los elementos del carrusel de Drama se inyectarán aquí por JavaScript -->
+                    </div>
+             
+                </div>
+		<div class="categoria__buttons">
+                    <div id="btn-left" name="btn-left" class="categoria__button categoria__button-left" onclick="moveCarousel('drama-items',-1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                    <div id="btn-right" name="btn-right" class="categoria__button categoria__button-right" onclick="moveCarousel('drama-items',1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carrusel Comedia -->
+            <div id="carrusel-comedy" class="categoria">
+                <h3 class="categoria__title parkinsans-special">Comedy</h3>
+                <div class="categoria__carousel test">
+                    <div class="categoria__items" id="comedy-items">
+                        <!-- Los elementos del carrusel de Crime se inyectarán aquí por JavaScript -->
+                    </div>
+                </div>
+		<div class="categoria__buttons">
+                    <div id="btn-left" name="btn-left" class="categoria__button categoria__button-left" onclick="moveCarousel('comedy-items',-1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                    <div id="btn-right" name="btn-right" class="categoria__button categoria__button-right" onclick="moveCarousel('comedy-items',1)">
+                        <div class="imagen">
+                            <img src="play-icon.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.3/anime.min.js"></script>
+    <script>
+let clickCount = 0;
+	// Función para cargar las películas desde la API del microservicio RandomMovies
+const loadMovies = async () => {
+    try {
+	const response2 = await fetch('http://randommovies:4000/random-movies-by-genres');
+        const data2 = await response2.json();
+
+	console.log('Peliculas por genero cargadas');
+        // Cargar los demás carruseles de género (horror, adventure, etc.) como antes
+        Object.entries(data2).forEach(async ([genre, movies]) => {
+            if (movies && movies.length > 0) {
+                const itemsContainer = document.getElementById(`${genre.toLowerCase()}-items`);
+                itemsContainer.innerHTML = ''; // Limpiar contenido anterior
+
+                // Generar los elementos del carrusel para cada película
+                for (const movie of movies) {
+                    const movieElement = document.createElement('div');
+                    movieElement.classList.add('categoria__item');
+                    movieElement.innerHTML = `
+                        <img class="item__img" src="${movie.poster}" alt="${movie.title}" onerror="this.onerror=null; this.src='404.jpeg';">
+                        <div class="item__details">
+                            <div class="details__buttons">
+                                <div class="details__play details__button"></div>
+                                <div class="details__add details__button"></div>
+                            </div>
+                            <p class="details__title">${movie.title}</p>
+                            <p class="details__info"> ${movie.year ? `Year: ${movie.year} <br>` : ''}
+ 					      ${movie.imdb && movie.imdb.rating ? `Rating: ${movie.imdb.rating}` : ''}
+  					      ${movie.runtime ? `Runtime: ${movie.runtime} minutes` : ''}
+		   	    </p>
+                        </div>
+                    `;
+                    // Añadir evento de clic para abrir el modal
+                    movieElement.querySelector('.item__details').addEventListener('click', () => {
+                        showMoviePlot(movie);
+                        sendMovieClickToHistorial(movie._id);  // Enviar ID de la película al microservicio de historial
+                    	countClicks();
+		    });
+                    itemsContainer.appendChild(movieElement);
+                }
+            }
+        });
+
+        // Cargar películas desde el endpoint RandomMovies
+        const response = await fetch('http://randommovies:4000/random-movies');
+        const data = await response.json();
+	console.log('Peliculas recomendadas cargadas');
+
+        // Llenar el carrusel recomendado para ti
+        const recommendedContainer = document.getElementById('recomendado-items');
+        recommendedContainer.innerHTML = ''; // Limpiar contenido anterior
+
+        // Generar los elementos del carrusel para las películas recomendadas
+        data.forEach(movie => {
+            const movieElement = document.createElement('div');
+            movieElement.classList.add('categoria__item');
+            movieElement.innerHTML = `
+                <img class="item__img" src="${movie.poster}" alt="${movie.title}" onerror="this.onerror=null; this.src='404.jpeg';">
+                <div class="item__details">
+                    <div class="details__buttons">
+                        <div class="details__play details__button"></div>
+                        <div class="details__add details__button"></div>
+                    </div>
+                    <p class="details__title">${movie.title}</p>
+                    <p class="details__info"> ${movie.year ? `Year: ${movie.year} <br>` : ''}
+ 					      ${movie.imdb && movie.imdb.rating ? `Rating: ${movie.imdb.rating}` : ''}
+  					      ${movie.runtime ? `Runtime: ${movie.runtime} minutes` : ''}
+		    </p>
+                </div>
+            `;
+            // Añadir evento de clic para abrir el modal
+            movieElement.querySelector('.item__details').addEventListener('click', () => {
+                showMoviePlot(movie);
+                sendMovieClickToHistorial(movie._id);  // Enviar ID de la película al microservicio de historial
+                countClicks();
+	    });
+            recommendedContainer.appendChild(movieElement);
+        });
+    
+	const spinner2= document.getElementById("spinner").classList.add("hidden");
+	const principal2 = document.querySelector(".principal").classList.remove("hidden");
+        const categorias2 = document.querySelector(".categorias").classList.remove("hidden");
+    } catch (error) {
+        console.error('Error al cargar las películas:', error);
+    }
+};   
+
+// Función para contar los clics
+const countClicks = async () => {
+    clickCount++;
+    if (clickCount === 3) {
+        // Realizar la llamada al microservicio Python después de 3 clics
+        const recommendedMovies = await getRecommendedMoviesFromPython();
+        clickCount = 0;
+        // Actualizar las primeras 5 películas del carrusel con las recomendaciones
+        updateRecommendedCarousel(recommendedMovies);
+    }
+};
+
+// Función para obtener las películas recomendadas desde el microservicio Python
+const getRecommendedMoviesFromPython = async () => {
+    try {
+        const response = await fetch('http://recomendador:6001/get-recommended-movies');
+        const recommendedMovies = await response.json();
+        return recommendedMovies;
+    } catch (error) {
+        console.error('Error al obtener las recomendaciones:', error);
+    }
+};
+
+const updateRecommendedCarousel = (recommendedMovies) => {
+    const parsedMovies = JSON.parse(recommendedMovies);
+    const recommendedContainer = document.getElementById('recomendado-items');
+    const items = recommendedContainer.getElementsByClassName('categoria__item');
+    
+    // Mover las últimas 5 películas hacia atrás
+    for (let i = items.length - 1; i >= 5; i--) {
+        recommendedContainer.appendChild(items[i]); // Mueve cada item al final
+    }
+
+    // Agregar las primeras 5 películas recomendadas al inicio
+    parsedMovies.slice(0, 5).forEach((movie, index) => {
+        const movieElement = document.createElement('div');
+	console.log(movie);
+        movieElement.classList.add('categoria__item');
+        movieElement.innerHTML = `
+            <img class="item__img" src="${movie.poster}" alt="${movie.title}" onerror="this.onerror=null; this.src='404.jpeg';">
+            <div class="item__details">
+                <div class="details__buttons">
+                    <div class="details__play details__button"></div>
+                    <div class="details__add details__button"></div>
+                </div>
+                <p class="details__title">${movie.Title}</p>
+                <p class="details__info"> ${movie.year ? `Year: ${movie.year} <br>` : ''}
+ 					      ${movie.Rating ? `Rating: ${movie.Rating}` : ''}
+  					      ${movie.runtime ? `Runtime: ${movie.runtime} minutes` : ''}
+		</p>
+            </div>
+        `;
+        // Añadir evento de clic para abrir el modal
+        movieElement.querySelector('.item__details').addEventListener('click', () => {
+            showMoviePlot(movie);
+            sendMovieClickToHistorial(movie._id);  // Enviar ID de la película al microservicio de historial
+        });
+        recommendedContainer.insertBefore(movieElement, items[0]); // Insertar las películas nuevas al principio
+        removeDuplicatesFromCarousel();
+	console.log('Nuevas peliculas recomendadas cargadas');
+    });
+};
+
+
+const showMoviePlot = (movie) => {
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+
+    modalTitle.textContent = movie.title || movie.Title;
+    modalContent.textContent = movie.plot ? movie.plot : 'Plot not available'; // Verifica si movie.plot existe
+
+    // Mostrar modal
+    const modal = document.getElementById('popup-modal');
+    modal.classList.remove('hidden');
+};
+
+// Función para eliminar duplicados del carrusel
+const removeDuplicatesFromCarousel = () => {
+    const recommendedContainer = document.getElementById('recomendado-items');
+    const items = recommendedContainer.getElementsByClassName('categoria__item');
+    const seenMovies = new Set();
+
+    Array.from(items).forEach((item) => {
+        const title = item.querySelector('.details__title').textContent; // Cambiar según el identificador único (por ejemplo, movie._id)
+        if (seenMovies.has(title)) {
+            item.remove(); // Elimina el duplicado
+        } else {
+            seenMovies.add(title);
+        }
+    });
+
+    console.log('Duplicados eliminados del carrusel');
+};
+    
+
+    // Cerrar el modal
+    const closeModal = () => {
+        const modal = document.getElementById('popup-modal');
+        modal.classList.add('hidden');
+    };
+
+    // Función para mover el carrusel
+    const moveCarousel = (carouselId, direction) => {
+        const carousel = document.getElementById(carouselId);
+        const items = carousel.getElementsByClassName('categoria__item');
+        const totalItems = items.length;
+
+        if (direction === 1) {
+            carousel.appendChild(items[0]); // Mover el primer item al final
+        } else if (direction === -1) {
+            carousel.insertBefore(items[totalItems - 1], items[0]); // Mover el último item al principio
+        }
+    };
+
+
+     // Función para enviar el clic de la película al microservicio de historial
+const sendMovieClickToHistorial = async (movieId) => {    
+console.log('Se invoco a la llamada click');
+    
+    try {
+        const response = await fetch('http://historial:5000/register-click', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ movieId }),
+        });
+
+        if (response.ok) {
+            console.log('Clic registrado correctamente');
+        } else {
+            console.error('Error al registrar clic');
+        }
+    } catch (error) {
+        console.error('Error al enviar clic al microservicio Historial:', error);
+    }
+};
+    // Cargar películas al iniciar
+    loadMovies();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@1.6.5/dist/flowbite.min.js"></script>
+</body>
+
+</html>

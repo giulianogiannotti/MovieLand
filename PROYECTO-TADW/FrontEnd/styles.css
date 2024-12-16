@@ -13,8 +13,6 @@ body {
     color:white;
 }
 
-
-
 #popup-modal{
 	position:absolute;
 	top:38%;
@@ -126,12 +124,12 @@ body {
 }
 .categorias .categoria__title {
   margin: 0;
-  padding-top: 40px;
-  padding-bottom: 5px;
+  padding-top: 30px;
+  padding-bottom: 0px;
 }
 .categorias {
   scroll-behavior: smooth;
-  padding: 40px 0;
+  padding: 0 0;
 }
 
 .categoria__carousel {
@@ -294,5 +292,5 @@ pointer-events:all;
   font-optical-sizing: auto;
   font-weight: 50px;
   font-style: normal;
-  font-size:23px;
+  font-size:20px;
 }

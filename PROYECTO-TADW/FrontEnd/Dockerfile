@@ -10,8 +10,8 @@ COPY . .
 # Instalar un servidor HTTP simple para servir el frontend
 RUN npm install -g http-server
 
-# Exponer el puerto 8080
-EXPOSE 8080
+# Exponer el puerto 3001
+EXPOSE 3001
 
 # Comando para correr el servidor HTTP
-CMD ["http-server", "-p", "8080"]
+CMD ["http-server", "-p", "3001"]
