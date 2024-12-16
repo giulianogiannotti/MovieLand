@@ -1,5 +1,11 @@
 # Proyecto-TADW-1
 
+## Instrucciones para probar el proyecto
+
+1. Levanta los servicios con Docker Compose:
+   docker-compose up
+2. Abrir el navegador e ir a: http://localhost:3001/
+
 Movies Microservice
 
 Descripción
