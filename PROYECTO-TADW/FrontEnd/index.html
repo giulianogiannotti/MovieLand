@@ -237,7 +237,7 @@ let clickCount = 0;
 	// Función para cargar las películas desde la API del microservicio RandomMovies
 const loadMovies = async () => {
     try {
-	const response2 = await fetch('http://randommovies:4000/random-movies-by-genres');
+	const response2 = await fetch('http://localhost:4000/random-movies-by-genres');
         const data2 = await response2.json();
 
 	console.log('Peliculas por genero cargadas');
@@ -277,7 +277,7 @@ const loadMovies = async () => {
         });
 
         // Cargar películas desde el endpoint RandomMovies
-        const response = await fetch('http://randommovies:4000/random-movies');
+        const response = await fetch('http://localhost:4000/random-movies');
         const data = await response.json();
 	console.log('Peliculas recomendadas cargadas');
 
@@ -335,7 +335,7 @@ const countClicks = async () => {
 // Función para obtener las películas recomendadas desde el microservicio Python
 const getRecommendedMoviesFromPython = async () => {
     try {
-        const response = await fetch('http://recomendador:6001/get-recommended-movies');
+        const response = await fetch('http://localhost:6001/get-recommended-movies');
         const recommendedMovies = await response.json();
         return recommendedMovies;
     } catch (error) {
@@ -440,7 +440,7 @@ const sendMovieClickToHistorial = async (movieId) => {
 console.log('Se invoco a la llamada click');
     
     try {
-        const response = await fetch('http://historial:5000/register-click', {
+        const response = await fetch('http://localhost:5000/register-click', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
