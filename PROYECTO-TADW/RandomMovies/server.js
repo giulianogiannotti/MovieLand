@@ -17,16 +17,6 @@ const MOVIES_API_URL = process.env.MOVIES_API_URL || 'http://movies:3000/movies'
 const OMDB_API_KEY = '720b1853'; // Tu AppKey de OMDB
 
 
-async function saveMoviesToFile(filename, data) {
-  try {
-    const filePath = path.resolve(__dirname, filename);  // __dirname es el directorio de server.js
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-    console.log('Datos guardados ');
-  } catch (err) {
-    console.error('Error al guardar los datos :', err.message);
-  }
-}
-
 /**
  * Función para verificar si una imagen es válida
  */
@@ -92,7 +82,7 @@ const getRandomMoviesByGenre = (movies, genre, n) => {
   return shuffled.slice(0, n);
 };
 
-// Ruta para obtener 15 películas de cada género especificado
+// Ruta para obtener 10 películas de cada género especificado
 app.get('/random-movies-by-genres', async (req, res) => {
   try {
     const response = await axios.get(MOVIES_API_URL);
@@ -102,26 +92,34 @@ app.get('/random-movies-by-genres', async (req, res) => {
       return res.status(404).json({ error: 'No hay películas disponibles.' });
     }
 
-    // Validar y actualizar los pósters de todas las películas
-    const validatedMovies = await validateAndUpdatePosters(movies);
-
     const genres = ['Horror', 'Adventure', 'Action', 'Drama', 'Comedy'];
     const moviesByGenre = {};
 
+    // Filtrar 10 películas de cada género
     genres.forEach(genre => {
-      moviesByGenre[genre] = getRandomMoviesByGenre(validatedMovies, genre, 15);
+      const genreMovies = getRandomMoviesByGenre(movies, genre, 10);
+      
+      // Validar y actualizar los pósters solo para las 10 películas de cada género
+      moviesByGenre[genre] = validateAndUpdatePosters(genreMovies);
     });
 
-    await saveMoviesToFile('movies3.json', moviesByGenre);
-	
-    res.json(moviesByGenre);
+    // Esperar a que todas las validaciones y actualizaciones de los pósters se completen
+    const validatedMoviesByGenre = await Promise.all(Object.values(moviesByGenre));
+
+    // Reestructurar el resultado para devolverlo correctamente
+    const finalResponse = genres.reduce((acc, genre, index) => {
+      acc[genre] = validatedMoviesByGenre[index];
+      return acc;
+    }, {});
+
+    res.json(finalResponse);
   } catch (err) {
     console.error('Error al obtener películas:', err.message);
     res.status(500).json({ error: 'Error al obtener películas.' });
   }
 });
 
-// Ruta para obtener 9 películas al azar
+// Ruta para obtener 10 películas al azar
 app.get('/random-movies', async (req, res) => {
   try {
     const response = await axios.get(MOVIES_API_URL);
@@ -131,14 +129,14 @@ app.get('/random-movies', async (req, res) => {
       return res.status(404).json({ error: 'No hay películas disponibles.' });
     }
 
+    const shuffled = movies.sort(() => 0.5 - Math.random());
+    const randomMovies = shuffled.slice(0, 10);
+
     // Validar y actualizar los pósters de todas las películas
-    const validatedMovies = await validateAndUpdatePosters(movies);
+    const validatedMovies = await validateAndUpdatePosters(randomMovies);
 
-    const shuffled = validatedMovies.sort(() => 0.5 - Math.random());
-    const randomMovies = shuffled.slice(0, 9);
-    await saveMoviesToFile('movies2.json', randomMovies);
 
-    res.json(randomMovies);
+    res.json(validatedMovies);
   } catch (err) {
     console.error('Error al obtener películas:', err.message);
     res.status(500).json({ error: 'Error al obtener películas.' });

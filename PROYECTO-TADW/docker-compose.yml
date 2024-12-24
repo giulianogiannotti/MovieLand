@@ -9,22 +9,20 @@ services:
     mem_limit: 1g  # Asegúrate de asignar menos memoria a MongoDB si es posible
     networks:
       - app-network
-
-
+   
   mongo-seed:
     image: mongo:4.4.6
     depends_on:
       - mongodb
     volumes:
       - ./Movies/movies.json:/movies.json
-    mem_limit: 200m  # Limitar la memoria de este servicio de carga de datos
     networks:
       - app-network
-
 
   movies:
     build:
       context: ./Movies
+      dockerfile: Dockerfile
     container_name: movies
     ports:
       - "3000:3000"
@@ -32,8 +30,8 @@ services:
       - mongodb
     environment:
       - MONGO_URI=mongodb://mongo:27017/moviesdb
-    mem_limit: 500m  # Ya está limitado
-    cpus: '0.5'  # Asegúrate de asignar pocos recursos si es posible
+    mem_limit: 500m  
+    cpus: '0.5'  
     command: node --max-old-space-size=2048 server.js
     networks:
       - app-network
@@ -41,6 +39,7 @@ services:
   randommovies:
     build:
       context: ./RandomMovies
+      dockerfile: Dockerfile
     container_name: randommovies
     ports:
       - "4000:4000"
@@ -69,6 +68,7 @@ services:
   historial:
     build:
       context: ./historial
+      dockerfile: Dockerfile
     container_name: historial
     ports:
       - "5000:5000"
@@ -77,9 +77,10 @@ services:
     networks:
       - app-network
 
-  recomendador:  # Aquí agregamos el servicio recomendador
+  recomendador:  
     build:
       context: ./Recomendador
+      dockerfile: Dockerfile
     container_name: recomendador
     ports:
       - "6001:6001"
@@ -98,6 +99,7 @@ services:
   frontend:
     build:
       context: ./FrontEnd
+      dockerfile: Dockerfile
     container_name: frontend_service
     ports:
       - "3001:3001"

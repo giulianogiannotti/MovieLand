@@ -9,7 +9,7 @@ COPY requirements.txt requirements.txt
 COPY . .
 
 # Instalar las dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Exponer el puerto que usará la aplicación
 EXPOSE 6001

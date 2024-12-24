@@ -1,100 +1,106 @@
-const express = require('express');
-const mongoose = require('mongoose');
+const { MongoClient, ObjectId } = require('mongodb');
+const PORT = process.env.PORT || 3000;
 const fs = require('fs');
 const path = require('path');
+const cors = require("cors");
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017';
+const DATABASE_NAME = 'moviesdb';
+const COLLECTION_NAME = 'movies';
+const jsonFilePath = path.join(__dirname, 'movies.json');
+const express = require('express');
 const app = express();
-const cors= require('cors');
-const https = require('https');
-const axios = require('axios');
-const axiosRetry = require('axios-retry').default;
-axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay, });
-
 app.use(cors());
 
-// Middleware para parsear JSON
-app.use(express.json());
+let database;
 
-const Movie = require('./models/Movie');
+async function main() {
+    const client = new MongoClient(MONGO_URI);
 
-// Leer variables de entorno
-const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/moviesdb';
+    try {
+        // Conectar al cliente MongoDB
+        await client.connect();
+        console.log('Conectado a MongoDB');
 
-// Conexión a MongoDB y carga de datos
-mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(async () => {
-    console.log('Conectado a MongoDB');
+        database = client.db(DATABASE_NAME);
+        const collection = database.collection(COLLECTION_NAME);
 
-    // Verificar si hay datos en la colección
-    const count = await Movie.countDocuments();
+        // Verificar si el archivo JSON existe
+        if (fs.existsSync(jsonFilePath)) {
+            console.log('Cargando datos desde movies.json...');
+            const info = JSON.parse(fs.readFileSync(jsonFilePath, 'utf8'));
+	 
+	    
+            info.forEach(movie => {
+                if (movie._id && movie._id.$oid) {
+                    movie._id = new ObjectId(movie._id.$oid);
+                } else if (movie._id && typeof movie._id !== 'object') {
+                    movie._id = new ObjectId();
+                }
 
-    // Borrar los datos existentes si hay documentos en la colección
-    if (count > 0) {
-      console.log('Ya hay datos');
-      //await Movie.deleteMany({});
-    }
-    else {
+                // Convertir otros campos específicos
+                if (movie.runtime?.$numberInt) {
+                    movie.runtime = parseInt(movie.runtime.$numberInt, 10);
+                }
+                if (movie.released?.$date?.$numberLong) {
+                    movie.released = new Date(parseInt(movie.released.$date.$numberLong, 10));
+                }
+                if (movie.awards?.wins?.$numberInt) {
+                    movie.awards.wins = parseInt(movie.awards.wins.$numberInt, 10);
+                }
+                if (movie.awards?.nominations?.$numberInt) {
+                    movie.awards.nominations = parseInt(movie.awards.nominations.$numberInt, 10);
+                }
+                if (movie.year?.$numberInt) {
+                    movie.year = parseInt(movie.year.$numberInt, 10);
+                }
+                if (movie.imdb?.rating?.$numberDouble) {
+                    movie.imdb.rating = parseFloat(movie.imdb.rating.$numberDouble);
+                }
+                if (movie.imdb?.votes?.$numberInt) {
+                    movie.imdb.votes = parseInt(movie.imdb.votes.$numberInt, 10);
+                }
+                if (movie.imdb?.id?.$numberInt) {
+                    movie.imdb.id = parseInt(movie.imdb.id.$numberInt, 10);
+                }
+                if (movie.tomatoes?.viewer?.rating?.$numberInt) {
+                    movie.tomatoes.viewer.rating = parseInt(movie.tomatoes.viewer.rating.$numberInt, 10);
+                }
+                if (movie.tomatoes?.viewer?.numReviews?.$numberInt) {
+                    movie.tomatoes.viewer.numReviews = parseInt(movie.tomatoes.viewer.numReviews.$numberInt, 10);
+                }
+                if (movie.tomatoes?.viewer?.meter?.$numberInt) {
+                    movie.tomatoes.viewer.meter = parseInt(movie.tomatoes.viewer.meter.$numberInt, 10);
+                }
+                if (movie.tomatoes?.lastUpdated?.$date?.$numberLong) {
+                    movie.tomatoes.lastUpdated = new Date(parseInt(movie.tomatoes.lastUpdated.$date.$numberLong, 10));
+                }
+            });
 
-    // Cargar los nuevos datos
-    console.log('Cargando datos iniciales desde movies.json...');
-    const dataPath = path.join(__dirname, 'movies.json');
-    let movies = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-
-      // Convertir el campo _id a ObjectId sin modificar el archivo JSON
-      movies = movies.map(movie => {
-        if (movie._id && movie._id.$oid) {
-          // Convertir el campo _id de String a ObjectId
-          movie._id = new mongoose.Types.ObjectId(movie._id.$oid);
+            // Insertar los movieumentos procesados en la colección
+            const result = await collection.insertMany(info);
+            console.log(' documentos insertados correctamente.');
+        } else {
+            console.error('Archivo no encontrado.');
         }
-        return movie;
-      });
+    } catch (err) {
+        console.error('Error al cargar datos en MongoDB:', err.message);
+    } 
+}
 
-      // Insertar las películas en la base de datos
-      await Movie.insertMany(movies);
-    console.log('Datos iniciales cargados correctamente.');
-   }
-  })
-  .catch((err) => {
-    console.error('Error al conectar a MongoDB:', err.message);
-  });
 
-// Rutas de la API
 app.get('/movies', async (req, res) => {
-  try {
-    const movies = await Movie.find();
-    res.json(movies);
-  } catch (err) {
-    console.error('Error al obtener las películas:', err);
-    res.status(500).send('Error al obtener las películas');
-  }
+    try {
+        const collection = database.collection(COLLECTION_NAME);
+        const movies = await collection.find().toArray();
+        res.json(movies);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error al obtener las peliculas.');
+    }
 });
 
-// Nueva ruta: Encontrar película por título
-app.get('/movies/title/:title', async (req, res) => {
-  try {
-    const movie = await Movie.findOne({ title: req.params.title });
-    if (!movie) return res.status(404).send('Película no encontrada.');
-    res.json(movie);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Error al obtener la película.');
-  }
-});
-
-// Nueva ruta: Obtener películas por género
-app.get('/movies/genre/:genre', async (req, res) => {
-  try {
-    const movies = await Movie.find({ genres: req.params.genre });
-    if (movies.length === 0) return res.status(404).send('No se encontraron películas para este género.');
-    res.json(movies);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Error al obtener las películas.');
-  }
-});
-
-// Iniciar el servidor
 app.listen(PORT, () => {
-  console.log('Servidor corriendo');
+    console.log(`Servidor corriendo en puerto ${PORT}`);
 });
+
+main().catch(console.error);
