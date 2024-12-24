@@ -5,6 +5,7 @@
 1. Levanta los servicios con Docker Compose:
    docker-compose up
 2. Abrir el navegador e ir a: http://localhost:3001/
+3. Aclaración: el recomendador recomienda peliculas en base a las peliculas inspeccionadas en los carruseles de los diferentes generos, no tiene en cuenta las peliculas inspecionadas del carrusel "Recommended for You"
 
 Movies Microservice
 
