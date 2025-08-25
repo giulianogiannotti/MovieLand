@@ -1,5 +1,64 @@
 # MovieLand
 
+### 📌 Microservicio **Frontend**
+
+## Tecnología utilizada
+
+* **HTML**: Para la estructura de las páginas.
+* **CSS**: Para los estilos y diseño visual.
+* **JavaScript (Vanilla JS)**: Para la lógica del lado del cliente y comunicación con los microservicios.
+
+---
+
+### 🎬 Microservicio **Movies**
+
+## Tecnología utilizada
+
+* **Node.js**: Entorno de ejecución de JavaScript en el servidor.
+* **Express.js**: Framework para construir APIs REST.
+* **MongoDB**: Base de datos NoSQL para almacenar y consultar películas.
+* **MongoDB Node Driver**: Cliente oficial de MongoDB para Node.js.
+* **fs y path**: Módulos nativos de Node.js para manejar archivos locales.
+* **CORS**: Middleware para permitir solicitudes desde otros dominios.
+
+---
+
+### 🎲 Microservicio **RandomMovies (Recomendador)**
+
+## Tecnología utilizada
+
+* **Python**: Lenguaje principal del microservicio.
+* **Flask**: Framework para crear la API REST.
+* **pandas**: Para la manipulación y transformación de datos.
+* **scikit-learn**: Para el cálculo de similitudes (TF-IDF y Cosine Similarity).
+* **requests**: Para consumir otros microservicios y APIs externas.
+* **pika**: Para la comunicación con RabbitMQ.
+* **Flask-CORS**: Middleware para habilitar CORS en la API.
+
+---
+
+### 📖 Microservicio **Historial**
+
+## Tecnología utilizada
+
+* **Node.js**: Entorno de ejecución en el servidor.
+* **Express.js**: Framework para construir la API REST.
+* **RabbitMQ**: Sistema de mensajería para enviar clics de películas.
+* **amqplib**: Librería cliente para RabbitMQ en Node.js.
+* **body-parser**: Middleware para procesar datos JSON.
+* **CORS**: Middleware para habilitar solicitudes de distintos orígenes.
+
+---
+
+### 🐳 Contenedores y Orquestación
+
+## Tecnología utilizada
+
+* **Docker**: Para contenerizar cada microservicio.
+* **Docker Compose**: Para orquestar y levantar todos los microservicios y dependencias (MongoDB, RabbitMQ, etc.) en conjunto.
+
+
+
 ## Instrucciones para probar el proyecto
 
 1. Levanta los servicios con Docker Compose:
